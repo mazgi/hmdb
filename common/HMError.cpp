@@ -6,4 +6,5 @@
 //
 //
 
+#include "hmdb-common.h"
 #include "HMError.hpp"

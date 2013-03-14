@@ -6,9 +6,6 @@
 //
 //
 
-#ifndef hmdb_hmdb_h
-#define hmdb_hmdb_h
-
-
-
-#endif
+#include <hmdb/HMError>
+#include <hmdb/HMDatabase>
+#include <hmdb/HMResultSet>

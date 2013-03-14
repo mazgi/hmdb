@@ -6,4 +6,8 @@
 //
 //
 
+#include "hmdb-common.h"
 #include "HMDatabase.hpp"
+
+#if SQLITE_VERSION_NUMBER >= 3005000
+#endif

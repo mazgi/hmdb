@@ -11,4 +11,16 @@
 
 #include <iostream>
 
+namespace hmdb {
+    class HMError {
+        int code_;
+        std::string description_;
+        void code(int newCode) { code_ = newCode; }
+        void description(std::string newDescription) { description_ = newDescription; }
+    public:
+        int code() { return code_; }
+        const std::string description() { return description_; }
+    };
+} /* endof namespace */
+
 #endif /* defined(__hmdb__HMError__) */
