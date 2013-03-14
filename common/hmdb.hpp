@@ -6,6 +6,6 @@
 //
 //
 
-#include <hmdb/HMError>
-#include <hmdb/HMDatabase>
-#include <hmdb/HMResultSet>
+#include "HMError.hpp"
+#include "HMDatabase.hpp"
+#include "HMResultSet.hpp"
