@@ -1,0 +1,16 @@
+//
+//  hmdb-cocoa.pch
+//  hmdb
+//
+//  Created by Matsuki Hidenori on 3/14/13.
+//
+//
+
+#ifndef hmdb_hmdb_cocoa_pch
+#define hmdb_hmdb_cocoa_pch
+
+#ifdef __OBJC__
+#import <Foundation/Foundation.h>
+#endif
+
+#endif

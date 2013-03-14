@@ -1,0 +1,9 @@
+#--------
+# eclipse workspace
+.metadata/*
+#--------
+# eclipse projects
+.classpath
+bin/
+gen/
+obj/
