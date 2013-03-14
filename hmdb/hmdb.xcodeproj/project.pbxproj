@@ -1,0 +1,84 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		EBF6F31016F14CB800B61522 /* HMDatabase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMDatabase.cpp; path = ../common/HMDatabase.cpp; sourceTree = "<group>"; };
+		EBF6F31116F14CB800B61522 /* HMDatabase.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = HMDatabase.hpp; path = ../common/HMDatabase.hpp; sourceTree = "<group>"; };
+		EBF6F31216F14D4D00B61522 /* hmdb.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = hmdb.hpp; path = ../common/hmdb.hpp; sourceTree = "<group>"; };
+		EBF6F31316F14DD900B61522 /* HMResultSet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMResultSet.cpp; path = ../common/HMResultSet.cpp; sourceTree = "<group>"; };
+		EBF6F31416F14DD900B61522 /* HMResultSet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = HMResultSet.hpp; path = ../common/HMResultSet.hpp; sourceTree = "<group>"; };
+		EBF6F31516F14DE900B61522 /* HMError.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMError.cpp; path = ../common/HMError.cpp; sourceTree = "<group>"; };
+		EBF6F31616F14DE900B61522 /* HMError.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = HMError.hpp; path = ../common/HMError.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		EBF6F30916F14C8000B61522 = {
+			isa = PBXGroup;
+			children = (
+				EBF6F31516F14DE900B61522 /* HMError.cpp */,
+				EBF6F31616F14DE900B61522 /* HMError.hpp */,
+				EBF6F31316F14DD900B61522 /* HMResultSet.cpp */,
+				EBF6F31416F14DD900B61522 /* HMResultSet.hpp */,
+				EBF6F31216F14D4D00B61522 /* hmdb.hpp */,
+				EBF6F31016F14CB800B61522 /* HMDatabase.cpp */,
+				EBF6F31116F14CB800B61522 /* HMDatabase.hpp */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		EBF6F30A16F14C8000B61522 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = EBF6F30D16F14C8000B61522 /* Build configuration list for PBXProject "hmdb" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EBF6F30916F14C8000B61522;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		EBF6F30E16F14C8000B61522 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		EBF6F30F16F14C8000B61522 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EBF6F30D16F14C8000B61522 /* Build configuration list for PBXProject "hmdb" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBF6F30E16F14C8000B61522 /* Debug */,
+				EBF6F30F16F14C8000B61522 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EBF6F30A16F14C8000B61522 /* Project object */;
+}
