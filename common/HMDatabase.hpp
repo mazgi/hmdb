@@ -11,6 +11,7 @@
 
 #include "hmdb-common.h"
 #include <iostream>
+#include <map>
 
 namespace hmdb {
     class HMError;
@@ -27,12 +28,20 @@ namespace hmdb {
         } OpenModeKey;
         typedef std::bitset<OpenModeKeyAll> OpenMode;
     private:
+        typedef std::map<std::string, sqlite3_stmt*> StatementMap;
+        const int CloseRetryLimit = 5;
+        const int ExecRetryLimit = 5;
         std::string databasePath_;
         sqlite3 *db_;
 #if SQLITE_VERSION_NUMBER >= 3005000
         std::string vfsName_;
         OpenMode mode_;
 #endif
+        bool inTransaction_;
+        bool executingStatement_;
+        StatementMap cachedStatements_;
+        bool buildStatement(HMError **outError, sqlite3_stmt **outStmt, const char *sql);
+        bool executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, va_list args);
     public:
 #if SQLITE_VERSION_NUMBER >= 3005000
         HMDatabase(const char *dbPath, int mode = OpenCreate|OpenReadWrite, const char *vfsName = NULL);
@@ -42,8 +51,8 @@ namespace hmdb {
         ~HMDatabase();
         bool open();
         bool close();
-        bool executeUpdate(HMError &outError, std::string sql, ...);
-        HMResultSet *executeQuery(HMError &outError, std::string sql, ...);
+        bool executeQuery(HMError **outError, const char *sql, ...);
+        bool executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, ...);
         bool beginTransaction();
         bool commitTransaction();
         bool rollbackTransaction();
