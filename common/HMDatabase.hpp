@@ -9,6 +9,7 @@
 #ifndef __hmdb__HMDatabase__
 #define __hmdb__HMDatabase__
 
+#include "hmdb-common.h"
 #include <iostream>
 
 namespace hmdb {
@@ -16,19 +17,27 @@ namespace hmdb {
     class HMResultSet;
 
     class HMDatabase {
-#if SQLITE_VERSION_NUMBER >= 3005000
-        typedef enum {
-            OpenReadOnly = SQLITE_OPEN_READONLY,
-            OpenReadWrite = SQLITE_OPEN_READWRITE,
-            OpenCreate = SQLITE_OPEN_CREATE,
-        } OpenMode;
-#endif
-        std::string databasePath_;
     public:
-        HMDatabase(const std::string dbPath);
+        typedef enum {
+            OpenReadOnly,
+            OpenReadWrite,
+            OpenCreate,
+            
+            OpenModeKeyAll
+        } OpenModeKey;
+        typedef std::bitset<OpenModeKeyAll> OpenMode;
+    private:
+        std::string databasePath_;
+        sqlite3 *db_;
 #if SQLITE_VERSION_NUMBER >= 3005000
-        HMDatabase(const std::string dbPath, OpenMode mode);
-        HMDatabase(const std::string dbPath, OpenMode mode, void *vfs);
+        std::string vfsName_;
+        OpenMode mode_;
+#endif
+    public:
+#if SQLITE_VERSION_NUMBER >= 3005000
+        HMDatabase(const char *dbPath, int mode = OpenCreate|OpenReadWrite, const char *vfsName = NULL);
+#else
+        HMDatabase(const char *dbPath);
 #endif
         ~HMDatabase();
         bool open();
