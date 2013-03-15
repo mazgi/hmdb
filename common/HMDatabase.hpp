@@ -48,6 +48,7 @@ namespace hmdb {
         bool commitTransaction();
         bool rollbackTransaction();
     };
+    typedef std::auto_ptr<HMDatabase> HMDatabaseRef;
 } /* endof namespace */
 
 #endif /* defined(__hmdb__HMDatabase__) */
