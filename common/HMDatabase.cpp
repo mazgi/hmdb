@@ -7,6 +7,7 @@
 //
 
 #include <unistd.h>
+#include <cxxabi.h>
 #include "hmdb-common.h"
 #include "HMDatabase.hpp"
 #include "HMError.hpp"
@@ -121,8 +122,37 @@ namespace hmdb {
         }
         return false;
     }
-    
-    bool HMDatabase::executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, va_list args)
+
+    void bindArgs(sqlite3_stmt *&stmt, const int replacementCount, int &index)
+    {
+        return;
+    }
+    template<class First>
+    void bindArgs(sqlite3_stmt *&stmt, const int replacementCount, int &index, const First &value)
+    {
+        const char *CharArrayName = "char [";
+        int status = 0;
+        char *demangled = abi::__cxa_demangle(typeid(value).name(), NULL, 0, &status);
+        if (status == 0) {
+            if (strncmp(CharArrayName, demangled, strlen(CharArrayName)) == 0) {
+//                const char *str = "";
+//                sqlite3_bind_text(*stmt, 0, str, 0, NULL);
+                std::cout <<
+                value << "is char array"
+                << std::endl;
+            }
+        }
+        free(demangled);
+    }
+    template<class First, class ... Rest>
+    void bindArgs(sqlite3_stmt *&stmt, const int replacementCount, int &index, const First &first, const Rest & ... rest)
+    {
+        bindArgs(stmt, replacementCount, index, first);
+        bindArgs(stmt, replacementCount, index, rest ...);
+    }
+
+    template<class ... Args>
+    bool HMDatabase::executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, const Args & ... args)
     {
         if (executingStatement_) {
             //TODO: err
@@ -145,7 +175,7 @@ namespace hmdb {
         int replacement = sqlite3_bind_parameter_count(stmt);
         for (; index < replacement; index++) {
             //TODO: type
-            value = va_arg(args, const char*);
+//            value = va_arg(args, const char*);
             if (value == NULL) {
                 sqlite3_bind_null(stmt, index);
             } else {
@@ -155,62 +185,5 @@ namespace hmdb {
 
 #pragma warning not impl.
         return false;
-    }
-    
-    bool HMDatabase::executeQuery(HMError **outError, const char *sql, ...)
-    {
-        va_list args;
-        va_start(args, sql);
-        bool result = executeQuery(outError, nullptr, sql, args);
-        va_end(args);
-        return result;
-    }
-
-    bool HMDatabase::executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, ...)
-    {
-        va_list args;
-        va_start(args, sql);
-        bool result = executeQuery(outError, outRet, sql, args);
-        va_end(args);
-        return result;
-    }
-
-    bool HMDatabase::beginTransaction()
-    {
-        if (inTransaction_) {
-            return false;
-        }
-        HMError *err = nullptr;
-        bool success = executeQuery(&err, "BEGIN EXCLUSIVE TRANSACTION");
-        if (success) {
-            inTransaction_ = true;
-        }
-        return success;
-    }
-
-    bool HMDatabase::commitTransaction()
-    {
-        if (!inTransaction_) {
-            return false;
-        }
-        HMError *err = nullptr;
-        bool success = executeQuery(&err, "COMMIT TRANSACTION");
-        if (success) {
-            inTransaction_ = false;
-        }
-        return success;
-    }
-
-    bool HMDatabase::rollbackTransaction()
-    {
-        if (!inTransaction_) {
-            return false;
-        }
-        HMError *err = nullptr;
-        bool success = executeQuery(&err, "ROLLBACK TRANSACTION");
-        if (success) {
-            inTransaction_ = false;
-        }
-        return success;
     }
 }

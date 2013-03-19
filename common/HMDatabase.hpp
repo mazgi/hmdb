@@ -70,21 +70,118 @@ namespace hmdb {
         bool executingStatement_;
         StatementMap cachedStatements_;
         bool buildStatement(HMError **outError, sqlite3_stmt **outStmt, const char *sql);
-        bool executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, va_list args);
     public:
 #if SQLITE_VERSION_NUMBER >= 3005000
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+        /*!
+         @brief コンストラクタ
+         @param dbPath databaseファイルpath
+         @param mode モード
+         @param vfsName VFS名
+         */
+#else
+#endif
         HMDatabase(const char *dbPath, int mode = OpenCreate|OpenReadWrite, const char *vfsName = NULL);
 #else
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+        /*!
+         @brief コンストラクタ
+         @param dbPath databaseファイルpath
+         */
+#else
+#endif
         HMDatabase(const char *dbPath);
 #endif
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+        /*!
+         @brief デストラクタ
+         */
+#else
+#endif
         ~HMDatabase();
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+        /*!
+         @brief databaseファイルを開く
+         @result 成功すればtrue
+         */
+#else
+#endif
         bool open();
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+        /*!
+         @brief databaseファイルを閉じる
+         @result 成功すればtrue
+         */
+#else
+#endif
         bool close();
-        bool executeQuery(HMError **outError, const char *sql, ...);
-        bool executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, ...);
-        bool beginTransaction();
-        bool commitTransaction();
-        bool rollbackTransaction();
+
+        template<class ... Args>
+        bool executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, const Args & ... args);
+
+//        template<class ... Args>
+//        bool executeQuery(HMError **outError, const char *sql, const Args & ... args)
+//        {
+//            bool result = executeQuery(outError, nullptr, sql, args ...);
+//            return result;
+//        }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+        /*!
+         @brief トランザクションを開始する
+         @result 成功すればtrue
+         */
+#else
+#endif
+        bool beginTransaction()
+        {
+            if (inTransaction_) {
+                return false;
+            }
+            HMError *err = nullptr;
+            bool success = executeQuery(&err, nullptr, "BEGIN EXCLUSIVE TRANSACTION");
+            if (success) {
+                inTransaction_ = true;
+            }
+            return success;
+        }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+        /*!
+         @brief トランザクションをコミットする
+         @result 成功すればtrue
+         */
+#else
+#endif
+        bool commitTransaction()
+        {
+            if (!inTransaction_) {
+                return false;
+            }
+            HMError *err = nullptr;
+            bool success = executeQuery(&err, nullptr, "COMMIT TRANSACTION");
+            if (success) {
+                inTransaction_ = false;
+            }
+            return success;
+        }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+        /*!
+         @brief トランザクションをロールバックする
+         @result 成功すればtrue
+         */
+#else
+#endif
+        bool rollbackTransaction()
+        {
+            if (!inTransaction_) {
+                return false;
+            }
+            HMError *err = nullptr;
+            bool success = executeQuery(&err, nullptr, "ROLLBACK TRANSACTION");
+            if (success) {
+                inTransaction_ = false;
+            }
+            return success;
+        }
     };
     typedef std::shared_ptr<HMDatabase> HMDatabaseRef;
 } /* endof namespace */
