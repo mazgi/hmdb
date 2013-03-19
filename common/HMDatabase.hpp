@@ -93,10 +93,11 @@ namespace hmdb {
             return true;
         }
 
+        //TODO: map<class, func*>でいけない？
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const double value)
         {
             std::cout << value << " is dbl!" << std::endl;
-            int result = sqlite3_bind_double(stmt, index++, value);
+            int result = sqlite3_bind_double(stmt, ++index, value);
             if (result != SQLITE_OK) {
                 //TODO: err
                 return false;
@@ -107,7 +108,7 @@ namespace hmdb {
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const int value)
         {
             std::cout << value << " is int!" << std::endl;
-            int result = sqlite3_bind_int(stmt, index++, value);
+            int result = sqlite3_bind_int(stmt, ++index, value);
             if (result != SQLITE_OK) {
                 //TODO: err
                 return false;
@@ -120,7 +121,8 @@ namespace hmdb {
             std::cout << value << " is char*!" << std::endl;
             //If the fourth parameter to sqlite3_bind_text() or sqlite3_bind_text16() is negative, then the length of the string is the number of bytes up to the first zero terminator.
             //The fifth argument to sqlite3_bind_blob(), sqlite3_bind_text(), and sqlite3_bind_text16() is a destructor used to dispose of the BLOB or string after SQLite has finished with it. The destructor is called to dispose of the BLOB or string even if the call to sqlite3_bind_blob(), sqlite3_bind_text(), or sqlite3_bind_text16() fails. If the fifth argument is the special value SQLITE_STATIC, then SQLite assumes that the information is in static, unmanaged space and does not need to be freed. If the fifth argument has the value SQLITE_TRANSIENT, then SQLite makes its own private copy of the data immediately, before the sqlite3_bind_*() routine returns.
-            int result = sqlite3_bind_text(stmt, index++, value, -1, SQLITE_STATIC);
+            //These are special values for the destructor that is passed in as the final argument to routines like sqlite3_result_blob(). If the destructor argument is SQLITE_STATIC, it means that the content pointer is constant and will never change. It does not need to be destroyed. The SQLITE_TRANSIENT value means that the content will likely change in the near future and that SQLite should make its own private copy of the content before returning.
+            int result = sqlite3_bind_text(stmt, ++index, value, -1, SQLITE_TRANSIENT);
             if (result != SQLITE_OK) {
                 //TODO: err
                 return false;
@@ -131,7 +133,7 @@ namespace hmdb {
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const std::string &value)
         {
             std::cout << value << " is string!" << std::endl;
-            int result = sqlite3_bind_text(stmt, index++, value.c_str(), -1, SQLITE_STATIC);
+            int result = sqlite3_bind_text(stmt, ++index, value.c_str(), -1, SQLITE_TRANSIENT);
             if (result != SQLITE_OK) {
                 //TODO: err
                 return false;
@@ -145,7 +147,7 @@ namespace hmdb {
             int result = SQLITE_OK;
             if (typeid(value) == typeid(HMNull)) {
                 std::cout << value << " is null" << std::endl;
-                sqlite3_bind_null(stmt, index++);
+                sqlite3_bind_null(stmt, ++index);
             } else {
                 //undefined value (or blob or int64)
                 const char *CharArrayName = "char [";
@@ -175,6 +177,7 @@ namespace hmdb {
             return bindParameterValue(outError, stmt, replacementCount, index, first)
             && bindParameterValue(outError, stmt, replacementCount, index, rest ...);
         }
+        bool step(HMError* &outError, sqlite3_stmt* &outStmt);
     public:
 #if SQLITE_VERSION_NUMBER >= 3005000
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
@@ -224,13 +227,6 @@ namespace hmdb {
         template<class ... Args>
         bool executeQueryForRead(HMError* &outError, HMResultSet* &outRet, const char* sql, const Args & ... args)
         {
-            int replacementCount2 = 3;
-            int index2 = 0;
-            sqlite3_stmt* stmt2 = NULL;
-            bindParameterValue(outError, stmt2, replacementCount2, index2, args ...);
-            return false;
-
-            
             if (executingStatement_) {
                 //TODO: err
                 return false;
@@ -247,35 +243,33 @@ namespace hmdb {
                 return false;
             }
 
-            // bind values to statement
+            // bind parameter values to statement
             const int replacementCount = sqlite3_bind_parameter_count(stmt);
-            int index = 0;
-            if (!bindParameterValue(outError, stmt, replacementCount, index, args ...)) {
+            int replacementIndex = 0;
+            bool bindParameterSuccess = bindParameterValue(outError, stmt, replacementCount, replacementIndex, args ...);
+            if (!bindParameterSuccess) {
+                //TODO: err
                 return false;
             }
 
+            // execute statement
+            bool stepStatementSuccess = step(outError, stmt);
+            if (!stepStatementSuccess) {
+                //TODO: err
+                return false;
+            }
+            //TODO: create statement obj
 
-//            int index = 0;
-//            const char *value = NULL;
-//            int replacement = sqlite3_bind_parameter_count(stmt);
-//            for (; index < replacement; index++) {
-//                //TODO: type
-//                //            value = va_arg(args, const char*);
-//                if (value == NULL) {
-//                    sqlite3_bind_null(stmt, index);
-//                } else {
-//                    sqlite3_bind_text(stmt, index, value, -1, SQLITE_STATIC);
-//                }
-//            }
-
-#pragma warning not impl.
-            return false;
+            sqlite3_finalize(stmt);
+            
+            executingStatement_ = false;
+            return true;
         }
 
         template<class ... Args>
         bool executeQuery(HMError* &outError, const char* sql, const Args & ... args)
         {
-            HMResultSet *ret = HMNull;
+            HMResultSet *ret = nullptr;
             return executeQueryForRead(outError, ret, sql, args ...);
         }
 #ifdef DOXYGEN_LANGUAGE_JAPANESE

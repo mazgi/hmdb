@@ -62,7 +62,8 @@ namespace hmdb {
         result = sqlite3_open(databasePath_.c_str(), &db_);
 #endif
         if (result != SQLITE_OK) {
-            HMLog("error opening! [code:%d]", result);
+            HMLog("error opening! [code:%d, errcode:%d, errmsg:%s]",
+                  result, sqlite3_extended_errcode(db_), sqlite3_errmsg(db_));
             return false;
         }
         return true;
@@ -85,7 +86,8 @@ namespace hmdb {
                     HMLog("database is busy. [code:%d]", result);
                     break;
                 default:
-                    HMLog("error closing! [code:%d]", result);
+                    HMLog("error closing! [code:%d, errcode:%d, errmsg:%s]",
+                          result, sqlite3_extended_errcode(db_), sqlite3_errmsg(db_));
                     break;
             }
             usleep(20);
@@ -96,7 +98,7 @@ namespace hmdb {
     bool HMDatabase::buildStatement(HMError* &outError, sqlite3_stmt* &outStmt, const char* sql)
     {
         StatementMap::iterator it = cachedStatements_.find(sql);
-        if (it == cachedStatements_.end()) {
+        if (it != cachedStatements_.end()) {
             // use cached statement
             outStmt = it->second;
             sqlite3_reset(outStmt);
@@ -114,12 +116,41 @@ namespace hmdb {
                         HMLog("database is busy. [code:%d]", result);
                         break;
                     default:
-                        HMLog("error build statement! [code:%d]", result);
+                        HMLog("error build statement with sql(%s)! [code:%d, errcode:%d, errmsg:%s]",
+                              sql,
+                              result, sqlite3_extended_errcode(db_), sqlite3_errmsg(db_));
                         break;
                 }
                 usleep(20);
             } while (++numberOfRetries < ExecRetryLimit);
         }
+        return false;
+    }
+
+    bool HMDatabase::step(HMError* &outError, sqlite3_stmt* &outStmt)
+    {
+        int numberOfRetries = 0;
+        do {
+            int result = sqlite3_step(outStmt);
+            switch (result) {
+                case SQLITE_OK:
+                    return true;
+                case SQLITE_DONE:
+                    return true;
+                case SQLITE_ERROR:
+                case SQLITE_MISUSE:
+                    //TODO: err
+                    break;
+                case SQLITE_BUSY:
+                case SQLITE_LOCKED:
+                    HMLog("database is busy. [code:%d]", result);
+                    break;
+                default:
+                    HMLog("error closing! [code:%d]", result);
+                    break;
+            }
+            usleep(20);
+        } while (++numberOfRetries < CloseRetryLimit);
         return false;
     }
 
