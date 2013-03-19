@@ -17,6 +17,35 @@ namespace hmdb {
     class HMError;
     class HMResultSet;
 
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+    /*!
+     @brief Databaseクラス
+
+     ## 概要
+     ファイルシステム上の1つのsqlite3ファイルへの操作を抽象化する.
+
+     ## 機能
+
+     ### このクラスが扱うこと
+     - クエリ発行
+     - データベースのオープン／クローズ
+     - トランザクションの開始／コミット／ロールバック
+
+     ### このクラスが扱わないこと
+     - エラーコード／エラーメッセージの管理
+     - クエリ実行結果の操作
+     
+     */
+#else
+    /*!
+     @brief Database class
+
+     ## About
+
+     ## Features
+
+     */
+#endif
     class HMDatabase {
     public:
         typedef enum {
