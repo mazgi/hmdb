@@ -123,31 +123,8 @@ namespace hmdb {
         return false;
     }
 
-    void bindArgs(sqlite3_stmt *&stmt, const int replacementCount, int &index)
+    char* HMDatabase::demangle__(const char *mangledName, int &status)
     {
-        return;
-    }
-    template<class First>
-    void bindArgs(sqlite3_stmt *&stmt, const int replacementCount, int &index, const First &value)
-    {
-        const char *CharArrayName = "char [";
-        int status = 0;
-        char *demangled = abi::__cxa_demangle(typeid(value).name(), NULL, 0, &status);
-        if (status == 0) {
-            if (strncmp(CharArrayName, demangled, strlen(CharArrayName)) == 0) {
-//                const char *str = "";
-//                sqlite3_bind_text(*stmt, 0, str, 0, NULL);
-                std::cout <<
-                value << "is char array"
-                << std::endl;
-            }
-        }
-        free(demangled);
-    }
-    template<class First, class ... Rest>
-    void bindArgs(sqlite3_stmt *&stmt, const int replacementCount, int &index, const First &first, const Rest & ... rest)
-    {
-        bindArgs(stmt, replacementCount, index, first);
-        bindArgs(stmt, replacementCount, index, rest ...);
+        return abi::__cxa_demangle(mangledName, NULL, 0, &status);
     }
 }
