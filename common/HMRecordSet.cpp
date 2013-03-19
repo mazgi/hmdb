@@ -7,7 +7,7 @@
 //
 
 #include "hmdb-common.h"
-#include "HMResultSet.hpp"
+#include "HMRecordSet.hpp"
 
 namespace hmdb {
     bool HMRecordSet::nextRow(HMError* &outError)

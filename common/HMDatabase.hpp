@@ -12,7 +12,7 @@
 #include "hmdb-common.h"
 #include <iostream>
 #include <map>
-#include "HMResultSet.hpp"
+#include "HMRecordSet.hpp"
 
 namespace hmdb {
     class HMError;

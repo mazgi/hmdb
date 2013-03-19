@@ -8,4 +8,4 @@
 
 #include "HMError.hpp"
 #include "HMDatabase.hpp"
-#include "HMResultSet.hpp"
+#include "HMRecordSet.hpp"
