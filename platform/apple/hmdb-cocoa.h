@@ -20,8 +20,8 @@
 #undef HMLog
 #endif
 #define __BASENAME__ (strrchr(__FILE__, '/') + 1)
-#define __HELPER_OF_HMLog(fmt, ...) NSLog(@"[%s:%05d](%s) " fmt "%s", __BASENAME__, __LINE__, __PRETTY_FUNCTION__, __VA_ARGS__)
-//#define HMLog(...) __HELPER_OF_HMLog(__VA_ARGS__, "")
+#define __HELPER_OF_HMLog(fmt, ...) printf("[%s:%05d](%s) " fmt "%s\n", __BASENAME__, __LINE__, __PRETTY_FUNCTION__, __VA_ARGS__)
+#define HMLog(...) __HELPER_OF_HMLog(__VA_ARGS__, "")
 #endif
 
 #ifdef TARGET_OS_IPHONE
