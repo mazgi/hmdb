@@ -61,7 +61,7 @@ namespace hmdb {
         const int CloseRetryLimit = 5;
         const int ExecRetryLimit = 5;
         std::string databasePath_;
-        sqlite3 *db_;
+        sqlite3* db_;
 #if SQLITE_VERSION_NUMBER >= 3005000
         std::string vfsName_;
         OpenMode mode_;
@@ -69,7 +69,7 @@ namespace hmdb {
         bool inTransaction_;
         bool executingStatement_;
         StatementMap cachedStatements_;
-        bool buildStatement(HMError **outError, sqlite3_stmt **outStmt, const char *sql);
+        bool buildStatement(HMError* &outError, sqlite3_stmt* &outStmt, const char* sql);
     public:
 #if SQLITE_VERSION_NUMBER >= 3005000
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
@@ -81,7 +81,7 @@ namespace hmdb {
          */
 #else
 #endif
-        HMDatabase(const char *dbPath, int mode = OpenCreate|OpenReadWrite, const char *vfsName = NULL);
+        HMDatabase(const char* dbPath, int mode = OpenCreate|OpenReadWrite, const char* vfsName = NULL);
 #else
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
@@ -90,7 +90,7 @@ namespace hmdb {
          */
 #else
 #endif
-        HMDatabase(const char *dbPath);
+        HMDatabase(const char* dbPath);
 #endif
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
@@ -117,14 +117,47 @@ namespace hmdb {
         bool close();
 
         template<class ... Args>
-        bool executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, const Args & ... args);
+        bool executeQueryWithResults(HMError* &outError, HMResultSet* &outRet, const char* sql, const Args & ... args)
+        {
+            if (executingStatement_) {
+                //TODO: err
+                return false;
+            }
+            //TODO: semaphore
+            executingStatement_ = true;
 
-//        template<class ... Args>
-//        bool executeQuery(HMError **outError, const char *sql, const Args & ... args)
-//        {
-//            bool result = executeQuery(outError, nullptr, sql, args ...);
-//            return result;
-//        }
+            // load/build statement
+            HMError *buildStmtErr = nullptr;
+            sqlite3_stmt *stmt = NULL;
+            bool buildStmtSuccess = buildStatement(buildStmtErr, stmt, sql);
+            if (!buildStmtSuccess) {
+                //TODO: err
+                return false;
+            }
+
+            int index = 0;
+            const char *value = NULL;
+            int replacement = sqlite3_bind_parameter_count(stmt);
+            for (; index < replacement; index++) {
+                //TODO: type
+                //            value = va_arg(args, const char*);
+                if (value == NULL) {
+                    sqlite3_bind_null(stmt, index);
+                } else {
+                    sqlite3_bind_text(stmt, index, value, -1, SQLITE_STATIC);
+                }
+            }
+            
+#pragma warning not impl.
+            return false;
+        }
+
+        template<class ... Args>
+        bool executeQuery(HMError* &outError, const char* sql, const Args & ... args)
+        {
+            HMResultSet *ret = nullptr;
+            return executeQueryWithResults(outError, ret, sql, args ...);
+        }
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief トランザクションを開始する
@@ -137,8 +170,8 @@ namespace hmdb {
             if (inTransaction_) {
                 return false;
             }
-            HMError *err = nullptr;
-            bool success = executeQuery(&err, nullptr, "BEGIN EXCLUSIVE TRANSACTION");
+            HMError* err = nullptr;
+            bool success = executeQuery(err, "BEGIN EXCLUSIVE TRANSACTION");
             if (success) {
                 inTransaction_ = true;
             }
@@ -156,8 +189,8 @@ namespace hmdb {
             if (!inTransaction_) {
                 return false;
             }
-            HMError *err = nullptr;
-            bool success = executeQuery(&err, nullptr, "COMMIT TRANSACTION");
+            HMError* err = nullptr;
+            bool success = executeQuery(err, "COMMIT TRANSACTION");
             if (success) {
                 inTransaction_ = false;
             }
@@ -175,8 +208,8 @@ namespace hmdb {
             if (!inTransaction_) {
                 return false;
             }
-            HMError *err = nullptr;
-            bool success = executeQuery(&err, nullptr, "ROLLBACK TRANSACTION");
+            HMError* err = nullptr;
+            bool success = executeQuery(err, "ROLLBACK TRANSACTION");
             if (success) {
                 inTransaction_ = false;
             }

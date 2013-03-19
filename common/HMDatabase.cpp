@@ -93,19 +93,19 @@ namespace hmdb {
         return false;
     }
 
-    bool HMDatabase::buildStatement(HMError **outError, sqlite3_stmt **outStmt, const char *sql)
+    bool HMDatabase::buildStatement(HMError* &outError, sqlite3_stmt* &outStmt, const char* sql)
     {
         StatementMap::iterator it = cachedStatements_.find(sql);
         if (it == cachedStatements_.end()) {
             // use cached statement
-            *outStmt = it->second;
-            sqlite3_reset(*outStmt);
+            outStmt = it->second;
+            sqlite3_reset(outStmt);
         }
 
-        if (!*outStmt) {
+        if (!outStmt) {
             int numberOfRetries = 0;
             do {
-                int result = sqlite3_prepare_v2(db_, sql, -1, outStmt, NULL);
+                int result = sqlite3_prepare_v2(db_, sql, -1, &outStmt, NULL);
                 switch (result) {
                     case SQLITE_OK:
                         return true;
@@ -149,41 +149,5 @@ namespace hmdb {
     {
         bindArgs(stmt, replacementCount, index, first);
         bindArgs(stmt, replacementCount, index, rest ...);
-    }
-
-    template<class ... Args>
-    bool HMDatabase::executeQuery(HMError **outError, HMResultSet **outRet, const char *sql, const Args & ... args)
-    {
-        if (executingStatement_) {
-            //TODO: err
-            return false;
-        }
-        //TODO: semaphore
-        executingStatement_ = true;
-
-        // load/build statement
-        HMError *buildStmtErr = nullptr;
-        sqlite3_stmt *stmt = NULL;
-        bool buildStmtSuccess = buildStatement(&buildStmtErr, &stmt, sql);
-        if (!buildStmtSuccess) {
-            //TODO: err
-            return false;
-        }
-
-        int index = 0;
-        const char *value = NULL;
-        int replacement = sqlite3_bind_parameter_count(stmt);
-        for (; index < replacement; index++) {
-            //TODO: type
-//            value = va_arg(args, const char*);
-            if (value == NULL) {
-                sqlite3_bind_null(stmt, index);
-            } else {
-                sqlite3_bind_text(stmt, index, value, -1, SQLITE_STATIC);
-            }
-        }
-
-#pragma warning not impl.
-        return false;
     }
 }
