@@ -26,6 +26,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		262277FE16F8F69A004D574C /* hmdb-apple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-apple.h"; sourceTree = "<group>"; };
 		EBF6F31B16F1501B00B61522 /* libhmdbios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhmdbios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBF6F31E16F1501B00B61522 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EBF6F33E16F1537E00B61522 /* HMDatabase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HMDatabase.cpp; sourceTree = "<group>"; };
@@ -38,7 +39,6 @@
 		EBF6F34916F15A2B00B61522 /* hmdb-common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-common.h"; sourceTree = "<group>"; };
 		EBF6F34C16F16A6400B61522 /* hmdb-android.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "hmdb-android.h"; sourceTree = "<group>"; };
 		EBF6F34D16F16AA700B61522 /* hmdb-platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-platform.h"; sourceTree = "<group>"; };
-		EBF6F34F16F1C4E800B61522 /* hmdb-cocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-cocoa.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +117,7 @@
 		EBF6F34E16F1C49500B61522 /* apple */ = {
 			isa = PBXGroup;
 			children = (
-				EBF6F34F16F1C4E800B61522 /* hmdb-cocoa.h */,
+				262277FE16F8F69A004D574C /* hmdb-apple.h */,
 			);
 			name = apple;
 			sourceTree = "<group>";

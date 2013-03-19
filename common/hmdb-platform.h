@@ -10,7 +10,7 @@
 #define hmdb_hmdb_platform_h
 
 #ifdef __APPLE__
-#include "../platform/apple/hmdb-cocoa.h"
+#include "../platform/apple/hmdb-apple.h"
 #elif defined __ANDROID__
 #include "../platform/android/hmdb-android.h"
 #elif defined _WIN32 || defined _WIN64
