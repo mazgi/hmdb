@@ -1,0 +1,4 @@
+@INCLUDE               = Doxyfile.common
+PREDEFINED             = DOXYGEN_LANGUAGE_ENGLISH=1
+OUTPUT_LANGUAGE        = English
+HTML_OUTPUT            = documents/en/html

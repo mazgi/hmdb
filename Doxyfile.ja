@@ -1,4 +1,4 @@
-@INCLUDE               = Doxyfile
+@INCLUDE               = Doxyfile.common
 PREDEFINED             = DOXYGEN_LANGUAGE_JAPANESE=1
 OUTPUT_LANGUAGE        = Japanese
 HTML_OUTPUT            = documents/ja/html
