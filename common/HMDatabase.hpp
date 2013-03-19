@@ -12,24 +12,9 @@
 #include "hmdb-common.h"
 #include <iostream>
 #include <map>
-
 #include "HMResultSet.hpp"
 
 namespace hmdb {
-    const class {
-    public:
-        template<class T>
-        operator T*() const { return 0; }
-        template<class C, class T>
-        operator T C::*() const { return 0; }
-        template<class T>
-        friend std::istream& operator>>(std::istream& is, T& s) { return is; }
-        template<class T>
-        friend std::ostream& operator<<(std::ostream& os, T const& s) { return os << "[HMNULL]"; }
-    private:
-        void operator&() const;
-    } HMNull = {};
-
     class HMError;
     class HMResultSet;
     
@@ -96,7 +81,6 @@ namespace hmdb {
         //TODO: map<class, func*>でいけない？
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const double value)
         {
-            std::cout << value << " is dbl!" << std::endl;
             int result = sqlite3_bind_double(stmt, ++index, value);
             if (result != SQLITE_OK) {
                 //TODO: err
@@ -107,7 +91,6 @@ namespace hmdb {
 
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const int value)
         {
-            std::cout << value << " is int!" << std::endl;
             int result = sqlite3_bind_int(stmt, ++index, value);
             if (result != SQLITE_OK) {
                 //TODO: err
@@ -118,7 +101,6 @@ namespace hmdb {
 
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const char* value)
         {
-            std::cout << value << " is char*!" << std::endl;
             //If the fourth parameter to sqlite3_bind_text() or sqlite3_bind_text16() is negative, then the length of the string is the number of bytes up to the first zero terminator.
             //The fifth argument to sqlite3_bind_blob(), sqlite3_bind_text(), and sqlite3_bind_text16() is a destructor used to dispose of the BLOB or string after SQLite has finished with it. The destructor is called to dispose of the BLOB or string even if the call to sqlite3_bind_blob(), sqlite3_bind_text(), or sqlite3_bind_text16() fails. If the fifth argument is the special value SQLITE_STATIC, then SQLite assumes that the information is in static, unmanaged space and does not need to be freed. If the fifth argument has the value SQLITE_TRANSIENT, then SQLite makes its own private copy of the data immediately, before the sqlite3_bind_*() routine returns.
             //These are special values for the destructor that is passed in as the final argument to routines like sqlite3_result_blob(). If the destructor argument is SQLITE_STATIC, it means that the content pointer is constant and will never change. It does not need to be destroyed. The SQLITE_TRANSIENT value means that the content will likely change in the near future and that SQLite should make its own private copy of the content before returning.
@@ -132,7 +114,6 @@ namespace hmdb {
 
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const std::string &value)
         {
-            std::cout << value << " is string!" << std::endl;
             int result = sqlite3_bind_text(stmt, ++index, value.c_str(), -1, SQLITE_TRANSIENT);
             if (result != SQLITE_OK) {
                 //TODO: err
@@ -145,25 +126,11 @@ namespace hmdb {
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const First &value)
         {
             int result = SQLITE_OK;
-            if (typeid(value) == typeid(HMNull)) {
-                std::cout << value << " is null" << std::endl;
+            if (typeid(value) == typeid(nullptr)) {
                 sqlite3_bind_null(stmt, ++index);
             } else {
                 //undefined value (or blob or int64)
-                const char *CharArrayName = "char [";
-                int status = 0;
-                char *demangled = demangle__(typeid(value).name(), status);
-                if (status == 0) {
-                    if (strncmp(CharArrayName, demangled, strlen(CharArrayName)) == 0) {
-                        std::cout << value << " is char*" << std::endl;
-                        //                const char *str = "";
-                        //                sqlite3_bind_text(*stmt, 0, str, 0, NULL);
-                        //                    std::cout <<
-                        //                    value << " is char array"
-                        //                    << std::endl;
-                    }
-                }
-                free(demangled);
+                sqlite3_bind_null(stmt, ++index);
             }
             if (result != SQLITE_OK) {
                 //TODO: err
