@@ -133,6 +133,9 @@ namespace hmdb {
         do {
             int result = sqlite3_step(outStmt);
             switch (result) {
+                case SQLITE_ROW:
+                    numberOfRetries--;
+                    break;
                 case SQLITE_OK:
                     return true;
                 case SQLITE_DONE:

@@ -12,23 +12,31 @@
 #include <iostream>
 
 namespace hmdb {
+    class HMError;
     class HMDatabase;
-
+    
     typedef std::basic_string<u_int8_t> blob;
 
-    class HMResult {
+    class HMRecordSet {
         HMDatabase *db_;
+        sqlite3_stmt *stmt_;
     public:
-        bool next();
-        int intForColumn(const std::string columnName);
+        bool nextRow(HMError* &outError);
+        template<class T>
+        const T& valueForColumnName(const char* name);
+        template<class T>
+        const T& valueForColumnIndex(const int index);
+
+        
+        int intForColumn(const char* columnName);
         int intForColumn(const int columnIndex);
-        double doubleForColumn(const std::string columnName);
+        double doubleForColumn(const char* columnName);
         double doubleForColumn(const int columnIndex);
-        long longForColumn(const std::string columnName);
+        long longForColumn(const char* columnName);
         long longForColumn(const int columnIndex);
-        std::string stringForColumn(const std::string columnName);
+        std::string stringForColumn(const char* columnName);
         std::string stringForColumn(const int columnIndex);
-        blob blobForColumn(const std::string columnName);
+        blob blobForColumn(const char* columnName);
         blob blobForColumn(const int columnIndex);
     };
 } /* endof namespace */

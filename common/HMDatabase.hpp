@@ -16,7 +16,7 @@
 
 namespace hmdb {
     class HMError;
-    class HMResultSet;
+    class HMRecordSet;
     
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
     /*!
@@ -192,7 +192,7 @@ namespace hmdb {
         bool close();
 
         template<class ... Args>
-        bool executeQueryForRead(HMError* &outError, HMResultSet* &outRet, const char* sql, const Args & ... args)
+        bool executeQueryForRead(HMError* &outError, HMRecordSet* &outRet, const char* sql, const Args & ... args)
         {
             if (executingStatement_) {
                 //TODO: err
@@ -236,7 +236,7 @@ namespace hmdb {
         template<class ... Args>
         bool executeQuery(HMError* &outError, const char* sql, const Args & ... args)
         {
-            HMResultSet *ret = nullptr;
+            HMRecordSet *ret = nullptr;
             return executeQueryForRead(outError, ret, sql, args ...);
         }
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
