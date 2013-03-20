@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
+#include <typeinfo>
 
 namespace hmdb {
     class HMError;
@@ -60,6 +62,10 @@ namespace hmdb {
             HMError *err = nullptr;
             return next(err);
         }
+        const double doubleValue(const int index)
+        {
+            return sqlite3_column_double(stmt_, index);
+        }
         const double doubleValue(const char* fieldName)
         {
             std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
@@ -67,19 +73,34 @@ namespace hmdb {
             if (index >= fieldNames.size()) {
                 return NULL;
             }
-            return sqlite3_column_double(stmt_, (int)index);
+            return doubleValue((int)index);
         }
-
-//        template<class T>
-//        const T& value(const char* fieldName)
-//        {
-//            return nullptr;
-//        }
-//        template<class T>
-//        const T& operator[](int fieldIndex)
-//        {
-//            return nullptr;
-//        }
+        const int intValue(const int index)
+        {
+            return sqlite3_column_int(stmt_, index);
+        }
+        const int intValue(const char* fieldName)
+        {
+            std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
+            size_t index = std::distance(fieldNames.begin(), it);
+            if (index >= fieldNames.size()) {
+                return NULL;
+            }
+            return intValue((int)index);
+        }
+        const char* textValue(const int index)
+        {
+            return reinterpret_cast<const char*>(sqlite3_column_text(stmt_, index));
+        }
+        const char* textValue(const char* fieldName)
+        {
+            std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
+            size_t index = std::distance(fieldNames.begin(), it);
+            if (index >= fieldNames.size()) {
+                return NULL;
+            }
+            return textValue((int)index);
+        }
     };
 } /* endof namespace */
 
