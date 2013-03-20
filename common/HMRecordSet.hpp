@@ -10,6 +10,7 @@
 #define __hmdb__HMResultSet__
 
 #include <iostream>
+#include <vector>
 
 namespace hmdb {
     class HMError;
@@ -17,7 +18,67 @@ namespace hmdb {
     
     typedef std::basic_string<u_int8_t> blob;
 
-    class HMRecordSet {
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+    /*!
+     @brief Recordの集合を表すクラス
+
+     ## 概要
+     複数の結果レコードへの操作を抽象化する.
+
+     ## 機能
+
+     ### このクラスが扱うこと
+     - レコードを進める
+     - レコードオブジェクトの取得
+
+     ### このクラスが扱わないこと
+     - エラーコード／エラーメッセージの管理
+     - レコードを戻す
+     - レコードへの値の書き込み
+     - レコードフィールドの操作
+
+     */
+#else
+    /*!
+     @brief Database class
+
+     ## About
+
+     ## Features
+     
+     */
+#endif
+    class HMRecordReader {
+        const int ExecRetryLimit = 5;
+        sqlite3_stmt* stmt_;
+        std::vector<std::string> fieldNames;
+    public:
+        HMRecordReader(sqlite3_stmt* &stmt);
+        bool hasNext(HMError* &outError);
+        inline bool hasNext()
+        {
+            HMError *err = nullptr;
+            return hasNext(err);
+        }
+        bool next(HMError* &outError);
+        inline bool next()
+        {
+            HMError *err = nullptr;
+            return next(err);
+        }
+        template<class T>
+        const T& value(const char* fieldName)
+        {
+            return nullptr;
+        }
+        template<class T>
+        const T& operator[](int fieldIndex)
+        {
+            return nullptr;
+        }
+    };
+
+    class HMRecordSet_ {
         HMDatabase *db_;
         sqlite3_stmt *stmt_;
     public:

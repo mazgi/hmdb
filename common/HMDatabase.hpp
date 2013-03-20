@@ -15,15 +15,23 @@
 #include "HMRecordSet.hpp"
 
 namespace hmdb {
+    typedef std::shared_ptr<HMDatabase> HMDatabaseRef;
+    typedef std::shared_ptr<HMError> HMErrorRef;
+    typedef std::shared_ptr<HMRecordReader> HMRecordReaderRef;
+
     class HMError;
-    class HMRecordSet;
-    
+    class HMRecordReader;
+
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
     /*!
      @brief Databaseクラス
 
      ## 概要
      ファイルシステム上の1つのsqlite3ファイルへの操作を抽象化する.
+     
+     ### ライフサイクルと所有権
+     - このクラスはアクティブなステートメントリストを所有する
+     - このクラスは結果セットのReaderを所有しない
 
      ## 機能
 
@@ -192,7 +200,7 @@ namespace hmdb {
         bool close();
 
         template<class ... Args>
-        bool executeQueryForRead(HMError* &outError, HMRecordSet* &outRet, const char* sql, const Args & ... args)
+        bool executeQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* sql, const Args & ... args)
         {
             if (executingStatement_) {
                 //TODO: err
@@ -236,8 +244,15 @@ namespace hmdb {
         template<class ... Args>
         bool executeQuery(HMError* &outError, const char* sql, const Args & ... args)
         {
-            HMRecordSet *ret = nullptr;
-            return executeQueryForRead(outError, ret, sql, args ...);
+            HMRecordReader *outRet = nullptr;
+            bool result = executeQueryForRead(outError, outRet, sql, args ...);
+            if (!result) {
+                return result;
+            }
+            while (outRet->next(outError)) {
+                //TODO: log
+            }
+            return result;
         }
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
@@ -297,7 +312,6 @@ namespace hmdb {
             return success;
         }
     };
-    typedef std::shared_ptr<HMDatabase> HMDatabaseRef;
 } /* endof namespace */
 
 #endif /* defined(__hmdb__HMDatabase__) */
