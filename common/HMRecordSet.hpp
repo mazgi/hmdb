@@ -60,16 +60,26 @@ namespace hmdb {
             HMError *err = nullptr;
             return next(err);
         }
-        template<class T>
-        const T& value(const char* fieldName)
+        const double doubleValue(const char* fieldName)
         {
-            return nullptr;
+            std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
+            size_t index = std::distance(fieldNames.begin(), it);
+            if (index >= fieldNames.size()) {
+                return NULL;
+            }
+            return sqlite3_column_double(stmt_, (int)index);
         }
-        template<class T>
-        const T& operator[](int fieldIndex)
-        {
-            return nullptr;
-        }
+
+//        template<class T>
+//        const T& value(const char* fieldName)
+//        {
+//            return nullptr;
+//        }
+//        template<class T>
+//        const T& operator[](int fieldIndex)
+//        {
+//            return nullptr;
+//        }
     };
 } /* endof namespace */
 
