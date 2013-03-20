@@ -24,70 +24,32 @@ namespace hmdb {
             HMLog("col[%d]:%s", i, fieldNames[i].c_str());
         }
     }
-    bool HMRecordReader::hasNext(HMError* &outError)
+    bool HMRecordReader::next(HMError* &outError)
     {
         int numberOfRetries = 0;
         do {
-            int result = sqlite3_step(stmt_);
+            const int result = sqlite3_step(stmt_);
             switch (result) {
                 case SQLITE_ROW:
-                    numberOfRetries--;
-                    break;
-                case SQLITE_OK:
+                    //TODO: read record
                     return true;
                 case SQLITE_DONE:
-                    return true;
+                    return false;
                 case SQLITE_ERROR:
                 case SQLITE_MISUSE:
                     //TODO: err
+                    HMLog("error execute step! [code:%d]", result);
                     break;
                 case SQLITE_BUSY:
                 case SQLITE_LOCKED:
                     HMLog("database is busy. [code:%d]", result);
                     break;
                 default:
-                    HMLog("error closing! [code:%d]", result);
+                    HMLog("error execute step! [code:%d]", result);
                     break;
             }
             usleep(20);
         } while (++numberOfRetries < ExecRetryLimit);
-        return false;
-    }
-    bool HMRecordReader::next(HMError* &outError)
-    {
-        return false;
-    }
-
-
-    bool HMRecordSet_::nextRow(HMError* &outError)
-    {
-        return false;
-
-        int numberOfRetries = 0;
-        do {
-            int result = sqlite3_step(stmt_);
-            switch (result) {
-                case SQLITE_ROW:
-                    numberOfRetries--;
-                    break;
-                case SQLITE_OK:
-                    return true;
-                case SQLITE_DONE:
-                    return true;
-                case SQLITE_ERROR:
-                case SQLITE_MISUSE:
-                    //TODO: err
-                    break;
-                case SQLITE_BUSY:
-                case SQLITE_LOCKED:
-                    HMLog("database is busy. [code:%d]", result);
-                    break;
-                default:
-                    HMLog("error closing! [code:%d]", result);
-                    break;
-            }
-            usleep(20);
-        } while (++numberOfRetries < 0);
         return false;
     }
 }

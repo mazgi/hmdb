@@ -228,15 +228,10 @@ namespace hmdb {
             }
 
             // execute statement
-            bool stepStatementSuccess = step(outError, stmt);
-            if (!stepStatementSuccess) {
-                //TODO: err
-                return false;
-            }
-            //TODO: create statement obj
+            outRet = new HMRecordReader(stmt);
 
-            sqlite3_finalize(stmt);
-            
+//            sqlite3_finalize(stmt);
+
             executingStatement_ = false;
             return true;
         }

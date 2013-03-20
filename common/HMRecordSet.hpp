@@ -40,7 +40,7 @@ namespace hmdb {
      */
 #else
     /*!
-     @brief Database class
+     @brief Records reader class
 
      ## About
 
@@ -54,12 +54,6 @@ namespace hmdb {
         std::vector<std::string> fieldNames;
     public:
         HMRecordReader(sqlite3_stmt* &stmt);
-        bool hasNext(HMError* &outError);
-        inline bool hasNext()
-        {
-            HMError *err = nullptr;
-            return hasNext(err);
-        }
         bool next(HMError* &outError);
         inline bool next()
         {
@@ -76,29 +70,6 @@ namespace hmdb {
         {
             return nullptr;
         }
-    };
-
-    class HMRecordSet_ {
-        HMDatabase *db_;
-        sqlite3_stmt *stmt_;
-    public:
-        bool nextRow(HMError* &outError);
-        template<class T>
-        const T& valueForColumnName(const char* name);
-        template<class T>
-        const T& valueForColumnIndex(const int index);
-
-        
-        int intForColumn(const char* columnName);
-        int intForColumn(const int columnIndex);
-        double doubleForColumn(const char* columnName);
-        double doubleForColumn(const int columnIndex);
-        long longForColumn(const char* columnName);
-        long longForColumn(const int columnIndex);
-        std::string stringForColumn(const char* columnName);
-        std::string stringForColumn(const int columnIndex);
-        blob blobForColumn(const char* columnName);
-        blob blobForColumn(const int columnIndex);
     };
 } /* endof namespace */
 

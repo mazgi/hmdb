@@ -74,6 +74,12 @@ namespace hmdb {
         if (!db_) {
             return true;
         }
+        
+        // close opened statements.
+        sqlite3_stmt* stmt = NULL;
+        while ((stmt = sqlite3_next_stmt(db_, stmt))) {
+            sqlite3_finalize(stmt);
+        }
         int numberOfRetries = 0;
         do {
             int result = sqlite3_close(db_);
@@ -110,6 +116,7 @@ namespace hmdb {
                 int result = sqlite3_prepare_v2(db_, sql, -1, &outStmt, NULL);
                 switch (result) {
                     case SQLITE_OK:
+//                        cachedStatements_[sql] = outStmt;
                         return true;
                     case SQLITE_BUSY:
                     case SQLITE_LOCKED:
