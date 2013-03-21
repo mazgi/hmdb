@@ -8,7 +8,7 @@
 
 #include <unistd.h>
 #include <cxxabi.h>
-#include "hmdb-common.h"
+#include "hmdb-common.hpp"
 #include "HMDatabase.hpp"
 #include "HMError.hpp"
 

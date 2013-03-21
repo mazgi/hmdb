@@ -9,7 +9,7 @@
 #ifndef __hmdb__HMDatabase__
 #define __hmdb__HMDatabase__
 
-#include "hmdb-common.h"
+#include "hmdb-common.hpp"
 #include <iostream>
 #include <map>
 #include "HMRecordSet.hpp"

@@ -7,7 +7,7 @@
 //
 
 #include <unistd.h>
-#include "hmdb-common.h"
+#include "hmdb-common.hpp"
 #include "HMRecordSet.hpp"
 
 namespace hmdb {
