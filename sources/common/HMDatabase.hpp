@@ -11,14 +11,16 @@
 
 #include "hmdb-common.hpp"
 #include <iostream>
+#include <bitset>
 #include <map>
 #include "HMRecordSet.hpp"
 
 namespace hmdb {
+#if HMDB_CXX_DIALECT_CXX11
     typedef std::shared_ptr<HMDatabase> HMDatabaseRef;
     typedef std::shared_ptr<HMError> HMErrorRef;
     typedef std::shared_ptr<HMRecordReader> HMRecordReaderRef;
-
+#endif
     class HMError;
     class HMRecordReader;
 
@@ -67,8 +69,6 @@ namespace hmdb {
         typedef std::bitset<OpenModeKeyAll> OpenMode;
     private:
         typedef std::map<std::string, sqlite3_stmt*> StatementMap;
-        const int CloseRetryLimit = 5;
-        const int ExecRetryLimit = 5;
         std::string databasePath_;
         sqlite3* db_;
 #if SQLITE_VERSION_NUMBER >= 3005000
@@ -78,7 +78,6 @@ namespace hmdb {
         bool inTransaction_;
         bool executingStatement_;
         StatementMap cachedStatements_;
-        char* demangle__(const char *mangledName, int &status);
         bool buildStatement(HMError* &outError, sqlite3_stmt* &outStmt, const char* sql);
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index)
         {
@@ -134,7 +133,7 @@ namespace hmdb {
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const First &value)
         {
             int result = SQLITE_OK;
-            if (typeid(value) == typeid(nullptr)) {
+            if (typeid(value) == typeid(HMDB_NULL)) {
                 sqlite3_bind_null(stmt, ++index);
             } else {
                 //undefined value (or blob or int64)
@@ -146,13 +145,14 @@ namespace hmdb {
             }
             return true;
         }
+#if HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
         template<class First, class ... Rest>
         bool bindParameterValue(HMError* &outError, sqlite3_stmt *&stmt, const int replacementCount, int &index, const First &first, const Rest & ... rest)
         {
             return bindParameterValue(outError, stmt, replacementCount, index, first)
             && bindParameterValue(outError, stmt, replacementCount, index, rest ...);
         }
-        bool step(HMError* &outError, sqlite3_stmt* &outStmt);
+#endif
     public:
 #if SQLITE_VERSION_NUMBER >= 3005000
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
@@ -198,7 +198,14 @@ namespace hmdb {
 #else
 #endif
         bool close();
-
+#if !HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
+        bool executeQuery(HMError* &outError, const char* sql)
+        {
+#pragma warning Impl.
+            return false;
+        }
+#endif
+#if HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
         template<class ... Args>
         bool executeQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* sql, const Args & ... args)
         {
@@ -235,7 +242,8 @@ namespace hmdb {
             executingStatement_ = false;
             return true;
         }
-
+#endif
+#if HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
         template<class ... Args>
         bool executeQuery(HMError* &outError, const char* sql, const Args & ... args)
         {
@@ -249,6 +257,7 @@ namespace hmdb {
             }
             return result;
         }
+#endif
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief トランザクションを開始する
@@ -261,7 +270,7 @@ namespace hmdb {
             if (inTransaction_) {
                 return false;
             }
-            HMError* err = nullptr;
+            HMError* err = HMDB_NULL;
             bool success = executeQuery(err, "BEGIN EXCLUSIVE TRANSACTION");
             if (success) {
                 inTransaction_ = true;
@@ -280,7 +289,7 @@ namespace hmdb {
             if (!inTransaction_) {
                 return false;
             }
-            HMError* err = nullptr;
+            HMError* err = HMDB_NULL;
             bool success = executeQuery(err, "COMMIT TRANSACTION");
             if (success) {
                 inTransaction_ = false;
@@ -299,7 +308,7 @@ namespace hmdb {
             if (!inTransaction_) {
                 return false;
             }
-            HMError* err = nullptr;
+            HMError* err = HMDB_NULL;
             bool success = executeQuery(err, "ROLLBACK TRANSACTION");
             if (success) {
                 inTransaction_ = false;

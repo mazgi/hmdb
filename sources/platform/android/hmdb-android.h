@@ -9,6 +9,4 @@
 #ifndef hmdb_hmdb_android_h
 #define hmdb_hmdb_android_h
 
-
-
 #endif

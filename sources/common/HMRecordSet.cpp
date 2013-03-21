@@ -11,6 +11,7 @@
 #include "HMRecordSet.hpp"
 
 namespace hmdb {
+    static const int ExecRetryLimit = 5;
     HMRecordReader::HMRecordReader(sqlite3_stmt* &stmt)
     {
         stmt_ = stmt;

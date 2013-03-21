@@ -6,6 +6,7 @@
 //
 //
 
+#include "common/hmdb-common.hpp"
 #include "common/HMError.hpp"
 #include "common/HMDatabase.hpp"
 #include "common/HMRecordSet.hpp"

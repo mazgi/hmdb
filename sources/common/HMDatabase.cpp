@@ -7,12 +7,13 @@
 //
 
 #include <unistd.h>
-#include <cxxabi.h>
 #include "hmdb-common.hpp"
 #include "HMDatabase.hpp"
 #include "HMError.hpp"
 
 namespace hmdb {
+    static const int CloseRetryLimit = 5;
+    static const int ExecRetryLimit = 5;
 #if SQLITE_VERSION_NUMBER >= 3005000
     HMDatabase::HMDatabase(const char *dbPath, int mode, const char *vfsName)
     :databasePath_(dbPath), vfsName_(vfsName == NULL ? "" : vfsName)
@@ -132,40 +133,5 @@ namespace hmdb {
             } while (++numberOfRetries < ExecRetryLimit);
         }
         return false;
-    }
-
-    bool HMDatabase::step(HMError* &outError, sqlite3_stmt* &outStmt)
-    {
-        int numberOfRetries = 0;
-        do {
-            int result = sqlite3_step(outStmt);
-            switch (result) {
-                case SQLITE_ROW:
-                    numberOfRetries--;
-                    break;
-                case SQLITE_OK:
-                    return true;
-                case SQLITE_DONE:
-                    return true;
-                case SQLITE_ERROR:
-                case SQLITE_MISUSE:
-                    //TODO: err
-                    break;
-                case SQLITE_BUSY:
-                case SQLITE_LOCKED:
-                    HMLog("database is busy. [code:%d]", result);
-                    break;
-                default:
-                    HMLog("error closing! [code:%d]", result);
-                    break;
-            }
-            usleep(20);
-        } while (++numberOfRetries < CloseRetryLimit);
-        return false;
-    }
-
-    char* HMDatabase::demangle__(const char *mangledName, int &status)
-    {
-        return abi::__cxa_demangle(mangledName, NULL, 0, &status);
     }
 }

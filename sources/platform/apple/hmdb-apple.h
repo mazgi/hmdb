@@ -15,7 +15,6 @@
 #import <Foundation/Foundation.h>
 #endif
 
-#include <sqlite3.h>
 #ifdef HMLog
 #undef HMLog
 #endif

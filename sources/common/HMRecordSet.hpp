@@ -51,7 +51,6 @@ namespace hmdb {
      */
 #endif
     class HMRecordReader {
-        const int ExecRetryLimit = 5;
         sqlite3_stmt* stmt_;
         std::vector<std::string> fieldNames;
     public:
@@ -59,7 +58,7 @@ namespace hmdb {
         bool next(HMError* &outError);
         inline bool next()
         {
-            HMError *err = nullptr;
+            HMError *err = HMDB_NULL;
             return next(err);
         }
         const double doubleValue(const int index)
