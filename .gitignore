@@ -11,9 +11,3 @@
 *.lai
 *.la
 *.a
-
-# Doxygen generated docs
-documents/*
-!documents/.gitignore
-documents/*/*
-!documents/*/.gitignore
