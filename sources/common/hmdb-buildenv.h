@@ -39,8 +39,11 @@
 #endif
 
 /* C++ dialect { */
+#ifndef HMDB_CXX_DIALECT_CXX98
+#define HMDB_CXX_DIALECT_CXX98 (__cplusplus >= 199711L)
+#endif
 #ifndef HMDB_CXX_DIALECT_CXX11
-#define HMDB_CXX_DIALECT_CXX11 0
+#define HMDB_CXX_DIALECT_CXX11 (__cplusplus >= 201103L)
 #endif
 /* } C++ dialect */
 
