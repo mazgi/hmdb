@@ -28,6 +28,10 @@
 /* Begin PBXFileReference section */
 		262277FE16F8F69A004D574C /* hmdb-apple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-apple.h"; sourceTree = "<group>"; };
 		26318F0D16FAF8960005C0AB /* hmdb-buildenv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-buildenv.h"; sourceTree = "<group>"; };
+		26318F1516FAFC650005C0AB /* hmdb-cxx_dialect-gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-cxx_dialect-gcc.h"; sourceTree = "<group>"; };
+		26318F1816FAFC650005C0AB /* hmdb-cxx_dialect-icc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-cxx_dialect-icc.h"; sourceTree = "<group>"; };
+		26318F1B16FAFC650005C0AB /* hmdb-cxx_dialect-llvm_clang.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-cxx_dialect-llvm_clang.h"; sourceTree = "<group>"; };
+		26318F1E16FAFC650005C0AB /* hmdb-cxx_dialect-llvm_gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-cxx_dialect-llvm_gcc.h"; sourceTree = "<group>"; };
 		268D7ACD16F917E200A15067 /* HMRecordSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HMRecordSet.cpp; sourceTree = "<group>"; };
 		268D7ACE16F917E200A15067 /* HMRecordSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = HMRecordSet.hpp; sourceTree = "<group>"; };
 		EBF6F31B16F1501B00B61522 /* libhmdbios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhmdbios.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,9 +58,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		26318F1216FAFC650005C0AB /* buildenv */ = {
+			isa = PBXGroup;
+			children = (
+				26318F1316FAFC650005C0AB /* gcc */,
+				26318F1616FAFC650005C0AB /* icc */,
+				26318F1916FAFC650005C0AB /* llvm_clang */,
+				26318F1C16FAFC650005C0AB /* llvm_gcc */,
+			);
+			name = buildenv;
+			path = ../../buildenv;
+			sourceTree = "<group>";
+		};
+		26318F1316FAFC650005C0AB /* gcc */ = {
+			isa = PBXGroup;
+			children = (
+				26318F1516FAFC650005C0AB /* hmdb-cxx_dialect-gcc.h */,
+			);
+			path = gcc;
+			sourceTree = "<group>";
+		};
+		26318F1616FAFC650005C0AB /* icc */ = {
+			isa = PBXGroup;
+			children = (
+				26318F1816FAFC650005C0AB /* hmdb-cxx_dialect-icc.h */,
+			);
+			path = icc;
+			sourceTree = "<group>";
+		};
+		26318F1916FAFC650005C0AB /* llvm_clang */ = {
+			isa = PBXGroup;
+			children = (
+				26318F1B16FAFC650005C0AB /* hmdb-cxx_dialect-llvm_clang.h */,
+			);
+			path = llvm_clang;
+			sourceTree = "<group>";
+		};
+		26318F1C16FAFC650005C0AB /* llvm_gcc */ = {
+			isa = PBXGroup;
+			children = (
+				26318F1E16FAFC650005C0AB /* hmdb-cxx_dialect-llvm_gcc.h */,
+			);
+			path = llvm_gcc;
+			sourceTree = "<group>";
+		};
 		EBF6F30916F14C8000B61522 = {
 			isa = PBXGroup;
 			children = (
+				26318F1216FAFC650005C0AB /* buildenv */,
 				EBF6F33D16F1537E00B61522 /* common */,
 				EBF6F33B16F1529A00B61522 /* platform */,
 				EBF6F31D16F1501B00B61522 /* Frameworks */,

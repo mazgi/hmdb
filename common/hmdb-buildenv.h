@@ -13,25 +13,25 @@
 /*--------------------------------
  | Clang frontend to LLVM        |
  --------------------------------*/
-#define HMDB_COMPILER_LLVM_CLANG
+#include "../buildenv/llvm_clang/hmdb-cxx_dialect-llvm_clang.h"
 
 #elif defined __llvm__
 /*--------------------------------
  | GCC frontend to LLVM(LLVM-GCC)|
  --------------------------------*/
-#define HMDB_COMPILER_LLVM_GCC
+#include "../buildenv/llvm_gcc/hmdb-cxx_dialect-llvm_gcc.h"
 
 #elif defined __GNUC__
 /*--------------------------------
  | GNU GCC                       |
  --------------------------------*/
-#define HMDB_COMPILER_GCC
+#include "../buildenv/gcc/hmdb-cxx_dialect-gcc.h"
 
-//#elif defined __INTEL_COMPILER
+#elif defined __INTEL_COMPILER
 /*--------------------------------
  | Intel C++ Compiler            |
  --------------------------------*/
-//#define HMDB_COMPILER_INTEL
+#include "../buildenv/icc/hmdb-cxx_dialect-icc.h"
 
 #else
 // Unknown compiler
