@@ -9,6 +9,7 @@
 #ifndef hmdb_hmdb_common_h
 #define hmdb_hmdb_common_h
 
+#include "hmdb-buildenv.h"
 #include "hmdb-platform.h"
 
 #ifndef HMLog
