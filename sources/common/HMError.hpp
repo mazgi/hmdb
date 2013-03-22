@@ -12,13 +12,22 @@
 #include <iostream>
 
 namespace hmdb {
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
     class HMError {
         int code_;
         std::string description_;
         void code(int newCode) { code_ = newCode; }
         void description(std::string newDescription) { description_ = newDescription; }
     public:
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         int code() { return code_; }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         const std::string description() { return description_; }
     };
 } /* endof namespace */

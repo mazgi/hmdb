@@ -40,7 +40,7 @@ namespace hmdb {
      - レコードフィールドの操作
 
      */
-#else
+#else /* } DOXYGEN_LANGUAGE { */
     /*!
      @brief Records reader class
 
@@ -49,22 +49,37 @@ namespace hmdb {
      ## Features
      
      */
-#endif
+#endif /* } DOXYGEN_LANGUAGE */
     class HMRecordReader {
         sqlite3_stmt* stmt_;
         std::vector<std::string> fieldNames;
     public:
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         HMRecordReader(sqlite3_stmt* &stmt);
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         bool next(HMError* &outError);
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         inline bool next()
         {
             HMError *err = HMDB_NULL;
             return next(err);
         }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         const double doubleValue(const int index)
         {
             return sqlite3_column_double(stmt_, index);
         }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         const double doubleValue(const char* fieldName)
         {
             std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
@@ -74,10 +89,16 @@ namespace hmdb {
             }
             return doubleValue((int)index);
         }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         const int intValue(const int index)
         {
             return sqlite3_column_int(stmt_, index);
         }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         const int intValue(const char* fieldName)
         {
             std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
@@ -87,10 +108,16 @@ namespace hmdb {
             }
             return intValue((int)index);
         }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         const char* textValue(const int index)
         {
             return reinterpret_cast<const char*>(sqlite3_column_text(stmt_, index));
         }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         const char* textValue(const char* fieldName)
         {
             std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);

@@ -26,13 +26,13 @@ namespace hmdb {
             mode_.set(OpenCreate);
         }
     }
-#else
+#else /* } SQLITE_VERSION_NUMBER { */
     HMDatabase(const std::string dbPath)
     :databasePath_(dbPath)
     {
 
     }
-#endif
+#endif /* } SQLITE_VERSION_NUMBER */
 
     HMDatabase::~HMDatabase()
     {
@@ -59,9 +59,9 @@ namespace hmdb {
             vfsName = vfsName_.c_str();
         }
         result = sqlite3_open_v2(databasePath_.c_str(), &db_, flag, vfsName);
-#else
+#else /* } SQLITE_VERSION_NUMBER { */
         result = sqlite3_open(databasePath_.c_str(), &db_);
-#endif
+#endif /* } SQLITE_VERSION_NUMBER */
         if (result != SQLITE_OK) {
             HMLog("error opening! [code:%d, errcode:%d, errmsg:%s]",
                   result, sqlite3_extended_errcode(db_), sqlite3_errmsg(db_));

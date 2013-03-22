@@ -47,7 +47,7 @@ namespace hmdb {
      - クエリ実行結果の操作
      
      */
-#else
+#else /* } DOXYGEN_LANGUAGE { */
     /*!
      @brief Database class
 
@@ -56,9 +56,12 @@ namespace hmdb {
      ## Features
 
      */
-#endif
+#endif /* } DOXYGEN_LANGUAGE */
     class HMDatabase {
     public:
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         typedef enum {
             OpenReadOnly,
             OpenReadWrite,
@@ -66,6 +69,9 @@ namespace hmdb {
             
             OpenModeKeyAll
         } OpenModeKey;
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         typedef std::bitset<OpenModeKeyAll> OpenMode;
     private:
         typedef std::map<std::string, sqlite3_stmt*> StatementMap;
@@ -74,7 +80,7 @@ namespace hmdb {
 #if SQLITE_VERSION_NUMBER >= 3005000
         std::string vfsName_;
         OpenMode mode_;
-#endif
+#endif /* } SQLITE_VERSION_NUMBER */
         bool inTransaction_;
         bool executingStatement_;
         StatementMap cachedStatements_;
@@ -162,49 +168,42 @@ namespace hmdb {
          @param mode モード
          @param vfsName VFS名
          */
-#else
-#endif
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         HMDatabase(const char* dbPath, int mode = OpenCreate|OpenReadWrite, const char* vfsName = NULL);
-#else
+#else /* } SQLITE_VERSION_NUMBER { */
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief コンストラクタ
          @param dbPath databaseファイルpath
          */
-#else
-#endif
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         HMDatabase(const char* dbPath);
-#endif
+#endif /* } SQLITE_VERSION_NUMBER */
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief デストラクタ
          */
-#else
-#endif
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         ~HMDatabase();
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief databaseファイルを開く
          @result 成功すればtrue
          */
-#else
-#endif
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         bool open();
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief databaseファイルを閉じる
          @result 成功すればtrue
          */
-#else
-#endif
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         bool close();
-#if !HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
-        bool executeQuery(HMError* &outError, const char* sql)
-        {
-#pragma warning Impl.
-            return false;
-        }
-#endif
 #if HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
         template<class ... Args>
         bool executeQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* sql, const Args & ... args)
@@ -242,8 +241,6 @@ namespace hmdb {
             executingStatement_ = false;
             return true;
         }
-#endif
-#if HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
         template<class ... Args>
         bool executeQuery(HMError* &outError, const char* sql, const Args & ... args)
         {
@@ -257,14 +254,20 @@ namespace hmdb {
             }
             return result;
         }
+#else
+        bool executeQuery(HMError* &outError, const char* sql)
+        {
+#pragma warning Impl.
+            return false;
+        }
 #endif
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief トランザクションを開始する
          @result 成功すればtrue
          */
-#else
-#endif
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         bool beginTransaction()
         {
             if (inTransaction_) {
@@ -282,8 +285,8 @@ namespace hmdb {
          @brief トランザクションをコミットする
          @result 成功すればtrue
          */
-#else
-#endif
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         bool commitTransaction()
         {
             if (!inTransaction_) {
@@ -301,8 +304,8 @@ namespace hmdb {
          @brief トランザクションをロールバックする
          @result 成功すればtrue
          */
-#else
-#endif
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
         bool rollbackTransaction()
         {
             if (!inTransaction_) {
