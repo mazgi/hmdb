@@ -261,6 +261,7 @@ namespace hmdb {
 #endif /* } DOXYGEN_LANGUAGE */
         bool executeQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* sql)
         {
+#pragma warning not impl.
             return false;
         }
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
@@ -268,9 +269,51 @@ namespace hmdb {
 #endif /* } DOXYGEN_LANGUAGE */
         bool executeQuery(HMError* &outError, const char* sql)
         {
+#pragma warning not impl.
             return false;
         }
 #endif /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES */
+        
+
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool executeQueryWithFormatForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, ...)
+        {
+#pragma warning not impl.
+            //TODO: parse
+            return false;
+        }
+
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool executeQueryWithFormat(HMError* &outError, const char* format, ...)
+        {
+#pragma warning not impl.
+            //TODO: parse
+            return false;
+        }
+
+
+        
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool executeQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* sql, std::pair<const char*,  int> params)
+        {
+#pragma warning not impl.
+            return false;
+        }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool executeQuery(HMError* &outError, const char* sql, std::pair<const char*, int> params)
+        {
+#pragma warning not impl.
+            return false;
+        }
+
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief トランザクションを開始する
