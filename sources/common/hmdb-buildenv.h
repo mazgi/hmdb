@@ -36,6 +36,7 @@
 #else
 // Unknown compiler
 #define HMDB_COMPILER_UNKNOWN
+#define HMDB_COMPILER "Unknown"
 #endif
 
 /* C++ dialect { */

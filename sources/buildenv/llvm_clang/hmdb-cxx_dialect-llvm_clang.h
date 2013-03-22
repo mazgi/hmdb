@@ -10,6 +10,7 @@
 #define hmdb_hmdb_cxx_dialect_llvm_clang_h
 
 #define HMDB_COMPILER_LLVM_CLANG
+#define HMDB_COMPILER "LLVM_CLANG"
 
 /* C++ feature { */
 // cxx_exceptions

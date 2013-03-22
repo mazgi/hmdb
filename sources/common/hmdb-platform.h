@@ -16,4 +16,9 @@
 #elif defined _WIN32 || defined _WIN64
 #endif
 
+#ifndef HMDB_PLATFORM
+#define HMDB_PLATFORM_UNKNOWN
+#define HMDB_PLATFORM "Unknown"
+#endif
+
 #endif

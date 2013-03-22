@@ -10,5 +10,6 @@
 #define hmdb_hmdb_cxx_dialect_llvm_gcc_h
 
 #define HMDB_COMPILER_LLVM_GCC
+#define HMDB_COMPILER "LLVM_GCC"
 
 #endif

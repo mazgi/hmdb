@@ -10,5 +10,6 @@
 #define hmdb_hmdb_cxx_dialect_icc_h
 
 #define HMDB_COMPILER_INTEL
+#define HMDB_COMPILER "INTEL"
 
 #endif
