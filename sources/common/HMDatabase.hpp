@@ -13,6 +13,7 @@
 #include <iostream>
 #include <bitset>
 #include <map>
+#include <utility>
 #include "HMRecordSet.hpp"
 
 namespace hmdb {
@@ -254,13 +255,22 @@ namespace hmdb {
             }
             return result;
         }
-#else
-        bool executeQuery(HMError* &outError, const char* sql)
+#else /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES { */
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool executeQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* sql)
         {
-#pragma warning Impl.
             return false;
         }
-#endif
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool executeQuery(HMError* &outError, const char* sql)
+        {
+            return false;
+        }
+#endif /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES */
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
          @brief トランザクションを開始する
