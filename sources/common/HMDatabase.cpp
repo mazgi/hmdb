@@ -16,8 +16,13 @@ namespace hmdb {
     static const int ExecRetryLimit = 5;
 #if SQLITE_VERSION_NUMBER >= 3005000
     HMDatabase::HMDatabase(const char *dbPath, int mode, const char *vfsName)
-    :databasePath_(dbPath), vfsName_(vfsName == NULL ? "" : vfsName)
+    :databasePath_(dbPath)
+    , vfsName_(vfsName == NULL ? "" : vfsName)
+    , cachedStatements_()
     {
+        db_ = NULL;
+        inTransaction_ = false;
+        executingStatement_ = false;
         mode_.set(OpenReadOnly);
         if (mode & OpenReadWrite) {
             mode_.set(OpenReadWrite);
@@ -135,30 +140,57 @@ namespace hmdb {
         return false;
     }
 
-    bool HMDatabase::executeQueryWithFormatForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, ...)
+    bool HMDatabase::executeFormattedQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, va_list args)
     {
         // variables for parse query
-        bool parseQuerySuccess = false;
+        bool parseQuerySuccess = true;
         char* sql = NULL;
+        char* readPosition = NULL;
+        char* insertPosition = NULL;
         
         // variables for build statement
-        bool buildStmtSuccess = false;
+        bool buildStmtSuccess = true;
         HMError* buildStmtErr = HMDB_NULL;
         sqlite3_stmt* stmt = NULL;
 
         // variables for bind parameters
-        bool bindParameterSuccess = false;
-        int replacementCount = SQLITE_OK;
+        bool bindParameterSuccess = true;
+        int intValue = 0;
+        double doubleValue = 0.0;
+        char* textValue = NULL;
+        int bindResult = 0;
         int replacementIndex = 0;
+        int replacementCount = 0;
 
-        sql = (char*)calloc(strlen(format) + 1, sizeof(char*));
-        if (sql != NULL) {
+        // parse format
+        //TODO: limit
+        sql = (char*)calloc(strlen(format) + 1/* '\0' */, sizeof(char*));
+        if (!sql) {
             parseQuerySuccess = false;
             HMLog("parse query error! can not allocate memory.");
             goto cleanup;
         }
-
-        // parse format
+        
+        readPosition = const_cast<char*>(format);
+        insertPosition = sql;
+        while (*readPosition) {
+            if (*readPosition == '%') {
+                readPosition++;
+                switch (*readPosition) {
+                    case 'd': /* fall through */
+                    case 'f': /* fall through */
+                    case 's': /* fall through */
+                        *insertPosition++ = '?';
+                        readPosition++;
+                        break;
+                    case '%': /* fall through */
+                    default:
+                        break;
+                }
+            }
+            *insertPosition++ = *readPosition++;
+        }
+        *insertPosition = '\0';
 
         // load/build statement
         buildStmtSuccess = buildStatement(buildStmtErr, stmt, sql);
@@ -169,16 +201,48 @@ namespace hmdb {
 
         // bind parameter values to statement
         replacementCount = sqlite3_bind_parameter_count(stmt);
-        bindParameterSuccess = bindParameterValue(outError, stmt, replacementCount, replacementIndex /*, args */);
-        if (!bindParameterSuccess) {
-            HMLog("bind parameters error! (%s)", sql);
+        readPosition = const_cast<char*>(format);
+        replacementIndex = 0;
+        while(*readPosition){
+            if (*readPosition == '%') {
+                readPosition++;
+                switch (*readPosition) {
+                    case 'd':
+                        intValue = va_arg(args, int);
+                        bindResult = sqlite3_bind_int(stmt, ++replacementIndex, intValue);
+                        break;
+                    case 'f':
+                        doubleValue = va_arg(args, double);
+                        bindResult = sqlite3_bind_double(stmt, ++replacementIndex, doubleValue);
+                        break;
+                    case 's':
+                        textValue = va_arg(args, char*);
+                        if (textValue) {
+                            bindResult = sqlite3_bind_text(stmt, ++replacementIndex, textValue, -1, SQLITE_TRANSIENT);
+                        } else {
+                            bindResult = sqlite3_bind_null(stmt, ++replacementIndex);
+                        }
+                        break;
+                    case '%': /* fall through */
+                    default:
+                        break;
+                }
+                if (bindResult != SQLITE_OK) {
+                    bindParameterSuccess = false;
+                    HMLog("bind parameters error! (%s)", sql);
+                    goto cleanup;
+                }
+            }
+            readPosition++;
+        }
+        if (replacementCount != replacementIndex) {
+            bindParameterSuccess = false;
+            HMLog("bind parameters error! parameter count mismatch (%s)", sql);
             goto cleanup;
         }
 
         // execute statement
         outRet = new HMRecordReader(stmt);
-
-
 
     cleanup:
         free(sql);

@@ -160,6 +160,10 @@ namespace hmdb {
             && bindParameterValue(outError, stmt, replacementCount, index, rest ...);
         }
 #endif
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool executeFormattedQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, va_list args);
     public:
 #if SQLITE_VERSION_NUMBER >= 3005000
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
@@ -245,7 +249,7 @@ namespace hmdb {
         template<class ... Args>
         bool executeQuery(HMError* &outError, const char* sql, const Args & ... args)
         {
-            HMRecordReader *outRet = nullptr;
+            HMRecordReader *outRet = HMDB_NULL;
             bool result = executeQueryForRead(outError, outRet, sql, args ...);
             if (!result) {
                 return result;
@@ -255,58 +259,37 @@ namespace hmdb {
             }
             return result;
         }
-#else /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES { */
-#ifdef DOXYGEN_LANGUAGE_JAPANESE
-#else /* } DOXYGEN_LANGUAGE { */
-#endif /* } DOXYGEN_LANGUAGE */
-        bool executeQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* sql)
-        {
-#pragma warning not impl.
-            return false;
-        }
-#ifdef DOXYGEN_LANGUAGE_JAPANESE
-#else /* } DOXYGEN_LANGUAGE { */
-#endif /* } DOXYGEN_LANGUAGE */
-        bool executeQuery(HMError* &outError, const char* sql)
-        {
-#pragma warning not impl.
-            return false;
-        }
 #endif /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES */
-        
 
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
-        bool executeQueryWithFormatForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, ...);
-
-#ifdef DOXYGEN_LANGUAGE_JAPANESE
-#else /* } DOXYGEN_LANGUAGE { */
-#endif /* } DOXYGEN_LANGUAGE */
-        bool executeQueryWithFormat(HMError* &outError, const char* format, ...)
+        bool executeFormattedQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, ...)
         {
-#pragma warning not impl.
-            //TODO: parse
-            return false;
+            va_list args;
+            va_start(args, format);
+            bool result = executeFormattedQueryForRead(outError, outRet, format, args);
+            va_end(args);
+            return result;
         }
 
-
-        
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
-        bool executeQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* sql, std::pair<const char*,  int> params)
+        bool executeFormattedQuery(HMError* &outError, const char* format, ...)
         {
-#pragma warning not impl.
-            return false;
-        }
-#ifdef DOXYGEN_LANGUAGE_JAPANESE
-#else /* } DOXYGEN_LANGUAGE { */
-#endif /* } DOXYGEN_LANGUAGE */
-        bool executeQuery(HMError* &outError, const char* sql, std::pair<const char*, int> params)
-        {
-#pragma warning not impl.
-            return false;
+            HMRecordReader *outRet = HMDB_NULL;
+            va_list args;
+            va_start(args, format);
+            bool result = executeFormattedQueryForRead(outError, outRet, format, args);
+            va_end(args);
+            if (!result) {
+                return result;
+            }
+            while (outRet->next(outError)) {
+                //TODO: log
+            }
+            return result;
         }
 
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
@@ -322,7 +305,12 @@ namespace hmdb {
                 return false;
             }
             HMError* err = HMDB_NULL;
-            bool success = executeQuery(err, "BEGIN EXCLUSIVE TRANSACTION");
+            bool success = false;
+#if HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
+            success = executeQuery(err, "BEGIN EXCLUSIVE TRANSACTION");
+#else /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES { */
+            success = executeFormattedQuery(err, "BEGIN EXCLUSIVE TRANSACTION");
+#endif /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES */
             if (success) {
                 inTransaction_ = true;
             }
@@ -341,7 +329,12 @@ namespace hmdb {
                 return false;
             }
             HMError* err = HMDB_NULL;
-            bool success = executeQuery(err, "COMMIT TRANSACTION");
+            bool success = false;
+#if HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
+            success = executeQuery(err, "COMMIT TRANSACTION");
+#else /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES { */
+            success = executeFormattedQuery(err, "COMMIT TRANSACTION");
+#endif /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES */
             if (success) {
                 inTransaction_ = false;
             }
@@ -360,7 +353,12 @@ namespace hmdb {
                 return false;
             }
             HMError* err = HMDB_NULL;
-            bool success = executeQuery(err, "ROLLBACK TRANSACTION");
+            bool success = false;
+#if HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES
+            success = executeQuery(err, "ROLLBACK TRANSACTION");
+#else /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES { */
+            success = executeFormattedQuery(err, "ROLLBACK TRANSACTION");
+#endif /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES */
             if (success) {
                 inTransaction_ = false;
             }
