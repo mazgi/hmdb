@@ -20,22 +20,7 @@
 #if HMDB_CXX_FEATURE_CXX_NULLPTR
 #define HMDB_NULL nullptr
 #else
-namespace hmdb {
-    const class {
-    public:
-        template<class T>
-        operator T*() const { return 0; }
-        template<class C, class T>
-        operator T C::*() const { return 0; }
-//        template<class T>
-//        friend std::istream& operator>>(std::istream& is, T& s) { return is; }
-//        template<class T>
-//        friend std::ostream& operator<<(std::ostream& os, T const& s) { return os << "[NULL]"; }
-    private:
-        void operator&() const;
-    } HMNull = {};
-}
-#define HMDB_NULL hmdb::HMNull
+#define HMDB_NULL NULL
 #endif
 
 #endif

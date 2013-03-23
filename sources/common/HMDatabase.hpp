@@ -60,6 +60,7 @@ namespace hmdb {
 #endif /* } DOXYGEN_LANGUAGE */
     class HMDatabase {
     public:
+#pragma mark - public members
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
@@ -75,6 +76,7 @@ namespace hmdb {
 #endif /* } DOXYGEN_LANGUAGE */
         typedef std::bitset<OpenModeKeyAll> OpenMode;
     private:
+#pragma mark - private members
         typedef std::map<std::string, sqlite3_stmt*> StatementMap;
         std::string databasePath_;
         sqlite3* db_;
@@ -160,11 +162,8 @@ namespace hmdb {
             && bindParameterValue(outError, stmt, replacementCount, index, rest ...);
         }
 #endif
-#ifdef DOXYGEN_LANGUAGE_JAPANESE
-#else /* } DOXYGEN_LANGUAGE { */
-#endif /* } DOXYGEN_LANGUAGE */
-        bool executeFormattedQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, va_list args);
     public:
+#pragma mark - public members
 #if SQLITE_VERSION_NUMBER >= 3005000
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
         /*!
@@ -261,6 +260,11 @@ namespace hmdb {
         }
 #endif /* } HMDB_CXX_FEATURE_CXX_VARIADIC_TEMPLATES */
 
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool executeFormattedQueryForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, va_list args);
+        
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
