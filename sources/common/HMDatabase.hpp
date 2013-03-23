@@ -278,12 +278,7 @@ namespace hmdb {
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
-        bool executeQueryWithFormatForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, ...)
-        {
-#pragma warning not impl.
-            //TODO: parse
-            return false;
-        }
+        bool executeQueryWithFormatForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, ...);
 
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */

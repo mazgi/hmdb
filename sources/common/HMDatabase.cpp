@@ -134,4 +134,55 @@ namespace hmdb {
         }
         return false;
     }
+
+    bool HMDatabase::executeQueryWithFormatForRead(HMError* &outError, HMRecordReader* &outRet, const char* format, ...)
+    {
+        // variables for parse query
+        bool parseQuerySuccess = false;
+        char* sql = NULL;
+        
+        // variables for build statement
+        bool buildStmtSuccess = false;
+        HMError* buildStmtErr = HMDB_NULL;
+        sqlite3_stmt* stmt = NULL;
+
+        // variables for bind parameters
+        bool bindParameterSuccess = false;
+        int replacementCount = SQLITE_OK;
+        int replacementIndex = 0;
+
+        sql = (char*)calloc(strlen(format) + 1, sizeof(char*));
+        if (sql != NULL) {
+            parseQuerySuccess = false;
+            HMLog("parse query error! can not allocate memory.");
+            goto cleanup;
+        }
+
+        // parse format
+
+        // load/build statement
+        buildStmtSuccess = buildStatement(buildStmtErr, stmt, sql);
+        if (!buildStmtSuccess) {
+            HMLog("build statement error! (%s)", sql);
+            goto cleanup;
+        }
+
+        // bind parameter values to statement
+        replacementCount = sqlite3_bind_parameter_count(stmt);
+        bindParameterSuccess = bindParameterValue(outError, stmt, replacementCount, replacementIndex /*, args */);
+        if (!bindParameterSuccess) {
+            HMLog("bind parameters error! (%s)", sql);
+            goto cleanup;
+        }
+
+        // execute statement
+        outRet = new HMRecordReader(stmt);
+
+
+
+    cleanup:
+        free(sql);
+        return parseQuerySuccess & buildStmtSuccess & bindParameterSuccess;
+    }
+
 }
