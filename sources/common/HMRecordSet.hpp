@@ -85,7 +85,7 @@ namespace hmdb {
             std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
             size_t index = std::distance(fieldNames.begin(), it);
             if (index >= fieldNames.size()) {
-                return NULL;
+                return (double)NULL;
             }
             return doubleValue((int)index);
         }
@@ -104,7 +104,7 @@ namespace hmdb {
             std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
             size_t index = std::distance(fieldNames.begin(), it);
             if (index >= fieldNames.size()) {
-                return NULL;
+                return (int)NULL;
             }
             return intValue((int)index);
         }
