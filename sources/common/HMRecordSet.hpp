@@ -73,14 +73,33 @@ namespace hmdb {
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
-        const double doubleValue(const int index)
+        bool isNull(const int index)
+        {
+            return sqlite3_column_type(stmt_, index) == SQLITE_NULL;
+        }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        bool isNull(const char* fieldName)
+        {
+            std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
+            size_t index = std::distance(fieldNames.begin(), it);
+            if (index >= fieldNames.size()) {
+                return (double)NULL;
+            }
+            return sqlite3_column_type(stmt_, (int)index) == SQLITE_NULL;
+        }
+#ifdef DOXYGEN_LANGUAGE_JAPANESE
+#else /* } DOXYGEN_LANGUAGE { */
+#endif /* } DOXYGEN_LANGUAGE */
+        double doubleValue(const int index)
         {
             return sqlite3_column_double(stmt_, index);
         }
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
-        const double doubleValue(const char* fieldName)
+        double doubleValue(const char* fieldName)
         {
             std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
             size_t index = std::distance(fieldNames.begin(), it);
@@ -92,14 +111,14 @@ namespace hmdb {
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
-        const int intValue(const int index)
+        int intValue(const int index)
         {
             return sqlite3_column_int(stmt_, index);
         }
 #ifdef DOXYGEN_LANGUAGE_JAPANESE
 #else /* } DOXYGEN_LANGUAGE { */
 #endif /* } DOXYGEN_LANGUAGE */
-        const int intValue(const char* fieldName)
+        int intValue(const char* fieldName)
         {
             std::vector<std::string>::iterator it = std::find(fieldNames.begin(), fieldNames.end(), fieldName);
             size_t index = std::distance(fieldNames.begin(), it);
