@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		269DD6EB1701ECEA005A74E2 /* testHMDatabase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 269DD6E91701ECEA005A74E2 /* testHMDatabase.cpp */; };
+		269DD6F01701ED19005A74E2 /* gtest_main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 269DD6ED1701ED19005A74E2 /* gtest_main.cc */; };
+		269DD6F11701ED19005A74E2 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 269DD6EE1701ED19005A74E2 /* gtest-all.cc */; };
 		26EA513916FB38DF004C78D2 /* HMDatabase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26EA513016FB38DF004C78D2 /* HMDatabase.cpp */; };
 		26EA513A16FB38DF004C78D2 /* HMError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26EA513516FB38DF004C78D2 /* HMError.cpp */; };
 		26EA513B16FB38DF004C78D2 /* HMRecordSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26EA513716FB38DF004C78D2 /* HMRecordSet.cpp */; };
@@ -14,6 +17,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		269DD6DE1701ECC2005A74E2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		EBF6F31916F1501B00B61522 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -26,6 +38,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		269DD6E01701ECC2005A74E2 /* hmdb_test98 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hmdb_test98; sourceTree = BUILT_PRODUCTS_DIR; };
+		269DD6E91701ECEA005A74E2 /* testHMDatabase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testHMDatabase.cpp; path = ../../tests/testHMDatabase.cpp; sourceTree = "<group>"; };
+		269DD6EA1701ECEA005A74E2 /* testHMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = testHMDatabase.h; path = ../../tests/testHMDatabase.h; sourceTree = "<group>"; };
+		269DD6ED1701ED19005A74E2 /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = "../../third_party_libs/googletest/gtest-1.6.0/fused-src/gtest/gtest_main.cc"; sourceTree = "<group>"; };
+		269DD6EE1701ED19005A74E2 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "../../third_party_libs/googletest/gtest-1.6.0/fused-src/gtest/gtest-all.cc"; sourceTree = "<group>"; };
+		269DD6EF1701ED19005A74E2 /* gtest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gtest.h; path = "../../third_party_libs/googletest/gtest-1.6.0/fused-src/gtest/gtest.h"; sourceTree = "<group>"; };
 		26D2613016FB2E08002E57BB /* hmdb-cxx_dialect-gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-cxx_dialect-gcc.h"; sourceTree = "<group>"; };
 		26D2613216FB2E08002E57BB /* hmdb-cxx_dialect-icc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-cxx_dialect-icc.h"; sourceTree = "<group>"; };
 		26D2613416FB2E08002E57BB /* hmdb-cxx_dialect-llvm_clang.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmdb-cxx_dialect-llvm_clang.h"; sourceTree = "<group>"; };
@@ -47,6 +65,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		269DD6DD1701ECC2005A74E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EBF6F31816F1501B00B61522 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -58,6 +83,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		269DD6EC1701ECF0005A74E2 /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				269DD6E91701ECEA005A74E2 /* testHMDatabase.cpp */,
+				269DD6EA1701ECEA005A74E2 /* testHMDatabase.h */,
+			);
+			name = tests;
+			sourceTree = "<group>";
+		};
+		269DD6F21701ED24005A74E2 /* googletest */ = {
+			isa = PBXGroup;
+			children = (
+				269DD6F31701ED4B005A74E2 /* gtest */,
+			);
+			name = googletest;
+			sourceTree = "<group>";
+		};
+		269DD6F31701ED4B005A74E2 /* gtest */ = {
+			isa = PBXGroup;
+			children = (
+				269DD6ED1701ED19005A74E2 /* gtest_main.cc */,
+				269DD6EE1701ED19005A74E2 /* gtest-all.cc */,
+				269DD6EF1701ED19005A74E2 /* gtest.h */,
+			);
+			name = gtest;
+			sourceTree = "<group>";
+		};
+		269DD6F41701ED52005A74E2 /* third_party_libs */ = {
+			isa = PBXGroup;
+			children = (
+				269DD6F21701ED24005A74E2 /* googletest */,
+			);
+			name = third_party_libs;
+			sourceTree = "<group>";
+		};
 		26D2612D16FB2E08002E57BB /* sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,7 +217,9 @@
 		EBF6F30916F14C8000B61522 = {
 			isa = PBXGroup;
 			children = (
+				269DD6EC1701ECF0005A74E2 /* tests */,
 				26D2612D16FB2E08002E57BB /* sources */,
+				269DD6F41701ED52005A74E2 /* third_party_libs */,
 				EBF6F31D16F1501B00B61522 /* Frameworks */,
 				EBF6F31C16F1501B00B61522 /* Products */,
 			);
@@ -167,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				EBF6F31B16F1501B00B61522 /* libhmdbios.a */,
+				269DD6E01701ECC2005A74E2 /* hmdb_test98 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -182,6 +245,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		269DD6DF1701ECC2005A74E2 /* hmdb_test98 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 269DD6E81701ECC2005A74E2 /* Build configuration list for PBXNativeTarget "hmdb_test98" */;
+			buildPhases = (
+				269DD6DC1701ECC2005A74E2 /* Sources */,
+				269DD6DD1701ECC2005A74E2 /* Frameworks */,
+				269DD6DE1701ECC2005A74E2 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hmdb_test98;
+			productName = hmdb_test98;
+			productReference = 269DD6E01701ECC2005A74E2 /* hmdb_test98 */;
+			productType = "com.apple.product-type.tool";
+		};
 		EBF6F31A16F1501B00B61522 /* hmdbios */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EBF6F32716F1501B00B61522 /* Build configuration list for PBXNativeTarget "hmdbios" */;
@@ -220,11 +300,22 @@
 			projectRoot = "";
 			targets = (
 				EBF6F31A16F1501B00B61522 /* hmdbios */,
+				269DD6DF1701ECC2005A74E2 /* hmdb_test98 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		269DD6DC1701ECC2005A74E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				269DD6EB1701ECEA005A74E2 /* testHMDatabase.cpp in Sources */,
+				269DD6F01701ED19005A74E2 /* gtest_main.cc in Sources */,
+				269DD6F11701ED19005A74E2 /* gtest-all.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EBF6F31716F1501B00B61522 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -238,6 +329,67 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		269DD6E61701ECC2005A74E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../third_party_libs/googletest/gtest.current/fused-src";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		269DD6E71701ECC2005A74E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++98";
+				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../third_party_libs/googletest/gtest.current/fused-src";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		EBF6F30E16F14C8000B61522 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -318,6 +470,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		269DD6E81701ECC2005A74E2 /* Build configuration list for PBXNativeTarget "hmdb_test98" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				269DD6E61701ECC2005A74E2 /* Debug */,
+				269DD6E71701ECC2005A74E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		EBF6F30D16F14C8000B61522 /* Build configuration list for PBXProject "hmdb" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
