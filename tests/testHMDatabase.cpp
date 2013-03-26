@@ -6,4 +6,11 @@
 //
 //
 
-#include "testHMDatabase.h"
+#include "gtest/gtest.h"
+#include "hmdb.hpp"
+
+TEST(DBTest, test1)
+{
+    hmdb::HMDatabase* db = new hmdb::HMDatabase("/cannotaccess/null");
+    ASSERT_FALSE(db->open());
+}
