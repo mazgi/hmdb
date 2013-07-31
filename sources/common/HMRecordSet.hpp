@@ -13,6 +13,7 @@
 #include <vector>
 #include <map>
 #include <typeinfo>
+#include <algorithm>
 
 namespace hmdb {
     class HMError;

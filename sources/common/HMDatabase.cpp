@@ -164,7 +164,7 @@ namespace hmdb {
 
         // parse format
         //TODO: limit
-        sql = (char*)calloc(strlen(format) + 1/* '\0' */, sizeof(char*));
+        sql = (char*)calloc(strlen(format) + 1/* '\0' */, sizeof(char));
         if (!sql) {
             parseQuerySuccess = false;
             HMLog("parse query error! can not allocate memory.");

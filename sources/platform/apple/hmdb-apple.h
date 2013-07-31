@@ -16,13 +16,15 @@
 #endif
 
 #ifndef HMDB_PLATFORM
-#define HMDB_PLATFORM_APPLE
-#define HMDB_PLATFORM "Apple"
+#   define HMDB_PLATFORM_APPLE
+#   define HMDB_PLATFORM "Apple"
 #endif
 
-#define __BASENAME__ (strrchr(__FILE__, '/') + 1)
-#define __HELPER_OF_HMLog(fmt, ...) printf("[%s:%05d](%s) " fmt "%s\n", __BASENAME__, __LINE__, __PRETTY_FUNCTION__, __VA_ARGS__)
-#define HMLog(...) __HELPER_OF_HMLog(__VA_ARGS__, "")
+#ifdef HMDB_DEVELOP
+#   define __BASENAME__ (strrchr(__FILE__, '/') + 1)
+#   define __HELPER_OF_HMLog(fmt, ...) printf("[%s:%05d](%s) " fmt "%s\n", __BASENAME__, __LINE__, __PRETTY_FUNCTION__, __VA_ARGS__)
+#   define HMLog(...) __HELPER_OF_HMLog(__VA_ARGS__, "")
+#endif
 
 #ifdef TARGET_OS_IPHONE
 // iOS
